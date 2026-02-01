@@ -18,9 +18,17 @@ def optimize_schedule(
         operators = []
         total_vector = np.zeros(day_of_month * 24)
 
-        for _ in range(int(n_2_2 / 2)):
+        part = int(n_2_2 / 2)
+
+        if n_2_2 % 2 != 0: #если операторов 2/2 нечётное количество
+            op = random_2_2(day_of_month)
+            operators.append(op)
+            total_vector += op["vector"]
+
+        for _ in range(part):
             op = random_2_2(day_of_month)
             op2 = random_2_2(day_of_month=day_of_month, skip=2)
+            op2['type'] += ' skip=2'
             operators.append(op)
             operators.append(op2)
             total_vector += op["vector"]
@@ -31,21 +39,14 @@ def optimize_schedule(
             operators.append(op)
             total_vector += op["vector"]
 
-#TO DO Нужно создавать по факту только 1 случайного оператора
-#потом делать его зеркало и расставлять их
-#вся случайность у них по сути это выбор начала ночной смены и обеда
-        for _ in range(int(n_2_2_night / 2)):
-            op = random_2_2_night(day_of_month)
-            op2 = random_2_2_night(day_of_month=day_of_month, skip=2)
-            operators.append(op)
-            operators.append(op2)
-            total_vector += op["vector"]
-            total_vector += op2["vector"]
-
+        op = random_2_2_night(day_of_month)
+        total_vector+=op['vector']
+        operators.append(op)
         score = score_schedule(total_vector, needs)
 
         if score < best_score:
             best_score = score
             best_solution = operators
+            best_vector = total_vector
 
-    return best_solution, best_score
+    return best_solution, best_score, best_vector

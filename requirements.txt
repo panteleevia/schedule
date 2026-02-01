@@ -5,3 +5,4 @@ pymysql
 openpyxl
 seaborn
 matplotlib
+tkintertable

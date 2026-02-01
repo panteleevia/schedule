@@ -1,5 +1,12 @@
 import numpy as np
 
 def score_schedule(total_vector, needs):
-    error = (total_vector - needs) ** 2
-    return np.std(error)
+    diff = total_vector - needs
+
+    under = np.clip(-diff, 0, None)
+    over  = np.clip(diff, 0, None)
+
+    return (
+        5 * np.sum(under ** 2) +
+        1 * np.sum(over ** 2)
+    )
