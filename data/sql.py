@@ -45,7 +45,7 @@ def get_schedule():
         WHERE s.created_at >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
             AND delay_comment.id IS NULL
             AND transferred_comment.id IS NULL
-            AND s.department = 'support_l2'
+            AND s.department in ('support_l2', 'support_cloud', 'support_cloud_l2 ')
         GROUP BY DAYOFWEEK(s.created_at), DAYNAME(s.created_at), HOUR(s.created_at), DATE(s.created_at)
     ) AS daily_stats
     GROUP BY day_of_week, day_number, hour

@@ -7,10 +7,10 @@ def random_2_2(day_of_month, skip=0):
     vec = employeer_2_2(start, lunch, day_of_month, skip)
     return {"type": "2/2", "start": start, "lunch": lunch, "vector": vec}
 
-def random_5_2(day_of_month):
+def random_5_2(day_of_month, first_day=0):
     start = random.randint(10, 15)
     lunch = random.randint(start + 2, start + 6)
-    vec = employeer_5_2(start, lunch, day_of_month)
+    vec = employeer_5_2(start, lunch, day_of_month, first_day=first_day)
     return {"type": "5/2", "start": start, "lunch": lunch, "vector": vec}
 
 def random_2_2_night(day_of_month):

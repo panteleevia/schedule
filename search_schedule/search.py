@@ -5,14 +5,14 @@ from search_schedule.utils import score_schedule
 def optimize_schedule(
     n_2_2,
     n_5_2,
-    n_2_2_night,
     needs,
     day_of_month,
-    iterations=1_000_000
+    iterations=1_000,
+    first_day = 0
 ):
     best_score = np.inf
     best_solution = None
-
+    best_vector = []
 
     for _ in range(iterations):
         operators = []
@@ -35,7 +35,7 @@ def optimize_schedule(
             total_vector += op2["vector"]
 
         for _ in range(n_5_2):
-            op = random_5_2(day_of_month)
+            op = random_5_2(day_of_month, first_day=first_day)
             operators.append(op)
             total_vector += op["vector"]
 

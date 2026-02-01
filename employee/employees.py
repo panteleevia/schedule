@@ -30,28 +30,21 @@ def employeer_2_2(start, lunch, day_of_month, skip=0, first_day=False):
 
     assert all(len(day) == 24 for day in result), "Есть день не из 24 часов"
 
-    return np.array(result).flatten()
+    return np.array(result).flatten()[:day_of_month * 24]
 
 
-def employeer_5_2(start,
-                  lunch,
-                  day_of_month,
-                  skip=None,
-                  first_day=None):
-    day_array = [0] * 24
-    day_array[start:start+9] = [1] * 9
-    day_array[lunch] = 0
+def employeer_5_2(start, lunch, day_of_month, skip=None, first_day=0):
+    result = []
+    for day in range(day_of_month):
+        day_of_week = (first_day + day) % 7
 
-    day_off = [0] * 24
+        if day_of_week < 5:
+            day_array = [0]*24
+            day_array[start:start+9] = [1]*9
+            day_array[lunch] = 0
+        else:
+            day_array = [0]*24
 
-    result = [day_array, day_array, day_array, day_array, day_array, day_off, day_off] * 10
-
-    if skip is not None and skip > 0:
-        result = [day_off] * skip + result
-
-    if first_day is not None and first_day > 0:
-        result = result[first_day:]
-
-    result = result[:day_of_month]
+        result.append(day_array)
 
     return np.array(result).flatten()

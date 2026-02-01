@@ -4,6 +4,7 @@ from data.sql import get_schedule
 def schedule_next_month():
     today = pd.Timestamp.today()
     first_day_next_month = (today + pd.offsets.MonthBegin(1)).normalize()
+    first_day_week_number = first_day_next_month.dayofweek
     last_day_next_month = (first_day_next_month + pd.offsets.MonthEnd(1))
     calendar = pd.date_range(
         start=first_day_next_month,
@@ -34,4 +35,4 @@ def schedule_next_month():
     # сколько операторов нужно в каждый час
     demand = df["avg_operators_needed"].fillna(0).astype(int).tolist()
 
-    return demand
+    return demand, first_day_week_number

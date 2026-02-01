@@ -40,25 +40,31 @@ def main():
     root.geometry("640x320")
     root.resizable(True, True)
 
+    root.configure(bg="#1e1e1e")
+
+    style = ttk.Style()
+    style.theme_use("default")
+    style.configure("TFrame", background="#1e1e1e")
+
     frame = ttk.Frame(root, padding=15)
     frame.pack(fill="both", expand=True)
 
     # --- Поля ввода ---
     ttk.Label(frame, text="Операторов 2/2").grid(row=0, column=0, sticky="w", pady=5)
     entry_22 = ttk.Entry(frame, width=10)
-    entry_22.grid(row=0, column=1, pady=5)
+    entry_22.grid(row=0, column=2, pady=5)
 
     ttk.Label(frame, text="Операторов 5/2").grid(row=1, column=0, sticky="w", pady=5)
     entry_52 = ttk.Entry(frame, width=10)
-    entry_52.grid(row=1, column=1, pady=5)
+    entry_52.grid(row=1, column=2, pady=5)
 
     ttk.Label(frame, text="Операторов 2/2 день ночь").grid(row=2, column=0, sticky="w", pady=5)
     entry_22_dn = ttk.Entry(frame, width=10)
-    entry_22_dn.grid(row=2, column=1, pady=5)
+    entry_22_dn.grid(row=2, column=2, pady=5)
 
     ttk.Label(frame, text="Попыток").grid(row=3, column=0, sticky="w", pady=5)
     iterations = ttk.Entry(frame, width=10)
-    iterations.grid(row=3, column=1, pady=5)
+    iterations.grid(row=3, column=2, pady=5)
 
     ttk.Label(frame, text="Сохранить в").grid(row=4, column=0, sticky="w", pady=5)
 
@@ -84,7 +90,7 @@ def main():
     # --- Обработчик кнопки ---
     def on_generate():
         try:
-            demand = schedule_next_month()
+            demand, first_day = schedule_next_month()
         except:
             messagebox.showerror("Ошибка", "Нет подключения к MySQL (проблема с VPN)")
             return
@@ -92,10 +98,10 @@ def main():
             best_solution, best_score, best_vector = optimize_schedule(
                 n_2_2=int(entry_22.get()),
                 n_5_2=int(entry_52.get()),
-                n_2_2_night=int(entry_22_dn.get()),
                 needs=demand,
                 day_of_month=int(len(demand) / 24),
-                iterations = int(iterations.get())
+                iterations = int(iterations.get()),
+                first_day = first_day
             )
 
             solution_dict = solution_to_dict(best_solution)
